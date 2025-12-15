@@ -1,0 +1,33 @@
+solid mic_holder_28mm
+
+  // Anel do microfone
+  difference() {
+    cylinder(h=20, r=20, $fn=100);
+    translate([0,0,-1])
+      cylinder(h=22, r=14.3, $fn=100);
+  }
+
+  // Braço de ligação
+  translate([0,-20,5])
+    cube([12,40,12], center=true);
+
+  // Corpo da rosca 5/8 fêmea
+  difference() {
+    translate([0,-45,6])
+      cylinder(h=18, r=12, $fn=80);
+
+    // Furo base da rosca (5/8 ≈ 15.9mm)
+    translate([0,-45,5])
+      cylinder(h=20, r=8.1, $fn=80);
+  }
+
+  // Furo para parafuso M6
+  difference() {
+    translate([0,0,10])
+      cube([40,12,12], center=true);
+
+    rotate([0,90,0])
+      cylinder(h=50, r=3.2, $fn=60);
+  }
+
+endsolid mic_holder_28mm
