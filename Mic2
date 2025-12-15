@@ -1,0 +1,63 @@
+// ===============================
+// SUPORTE DE MICROFONE 28mm
+// Rosca real 5/8"-27 fêmea
+// Parafuso lateral M6
+// ===============================
+
+$fn = 100;
+
+// -------- PARAMETROS --------
+mic_diam = 28.6;          // 28mm + folga PETG
+anel_altura = 20;
+anel_externo = 40;
+
+braco_largura = 14;
+braco_comprimento = 36;
+braco_altura = 14;
+
+rosca_altura = 18;
+rosca_externa = 26;
+
+// Rosca 5/8"-27
+rosca_diam = 15.9 + 0.25; // tolerância PETG
+passo = 25.4 / 27;
+
+// -------- FUNÇÃO ROSCA --------
+module rosca_interna(d, pitch, h) {
+    difference() {
+        cylinder(h=h, r=d/2 + 2);
+        translate([0,0,-1])
+            metric_thread(
+                diameter=d,
+                pitch=pitch,
+                length=h+2,
+                internal=true
+            );
+    }
+}
+
+// -------- ANEL MICROFONE --------
+difference() {
+    cylinder(h=anel_altura, r=anel_externo/2);
+    translate([0,0,-1])
+        cylinder(h=anel_altura+2, r=mic_diam/2);
+}
+
+// -------- BRAÇO --------
+translate([0,-braco_comprimento/2, anel_altura/2])
+cube([braco_largura, braco_comprimento, braco_altura], center=true);
+
+// -------- CORPO ROSCA --------
+translate([0,-braco_comprimento-10, 0])
+difference() {
+    cylinder(h=rosca_altura, r=rosca_externa/2);
+    rosca_interna(rosca_diam, passo, rosca_altura);
+}
+
+// -------- FURO PARAFUSO M6 --------
+translate([0,0,anel_altura/2])
+rotate([0,90,0])
+cylinder(h=60, r=3.2, center=true);
+
+// -------- BIBLIOTECA ROSCA --------
+include <threads.scad>;
